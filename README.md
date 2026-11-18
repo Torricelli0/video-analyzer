@@ -40,10 +40,37 @@ brew install yt-dlp ffmpeg    # macOS
 
 Agent 会自动：检查工具 → 取元信息 → 查字幕 → 下载 → 抽帧 → 读图 → 输出讲义。
 
+
+## 输出格式
+
+默认输出 Markdown 讲义；也可以生成**浏览器可看的 HTML 页面**。
+
+### 生成 HTML 讲义
+
+1. 把分析结果写成 `content.json`（结构见 SKILL.md）
+2. 渲染：
+
+```bash
+python3 scripts/build-report.py content.json report.html
+```
+
+3. 打开：
+
+```bash
+open report.html
+```
+
+样式采用 **Terminal Aesthetic**（黑底 + 单一蓝 `#6799fe`），单文件、零依赖，可直接分享或归档。
+
+想换风格就改 `templates/report.html` 的 CSS。
+
 ## 文件
 
-- `SKILL.md` — skill 主体
+- `SKILL.md` — skill 主体（完整流程）
+- `templates/report.html` — HTML 讲义模板
+- `scripts/build-report.py` — JSON → HTML 渲染器
 - `install.sh` — 一键安装脚本
+
 
 ## License
 

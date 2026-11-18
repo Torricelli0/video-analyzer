@@ -151,6 +151,67 @@ whisper audio.mp3 --model medium --output_format srt
 }
 ```
 
+
+## 输出格式：Markdown 或 HTML
+
+默认输出 Markdown 讲义。如果用户想要**浏览器里可看、可搜索的页面**，生成 HTML。
+
+### 生成 HTML 讲义
+
+**第 1 步**：把分析结果写成 JSON：
+
+```json
+{
+  "title": "视频标题",
+  "date": "2026-11-17",
+  "duration": "6:46",
+  "platform": "B站",
+  "summary": "一句话摘要",
+  "method": "抽帧读硬字幕（字幕接口仅返回弹幕）",
+  "source_url": "https://www.bilibili.com/video/BVxxxx",
+  "sections": [
+    {
+      "heading": "一、章节标题",
+      "timestamp": "00:20",
+      "body": "<p>正文段落</p><ul><li>要点</li></ul>",
+      "evidence": "画面硬字幕 / 幻灯片文字"
+    }
+  ]
+}
+```
+
+**第 2 步**：渲染
+
+```bash
+python3 scripts/build-report.py content.json report.html
+```
+
+**第 3 步**：打开查看
+
+```bash
+open report.html          # macOS
+xdg-open report.html      # Linux
+```
+
+### HTML 样式说明
+
+`templates/report.html` 采用 **Terminal Aesthetic**（黑底 + 单一蓝 `#6799fe`）：
+
+- 黑底 `#0a0a0a`，白字，极淡边框
+- 时间戳用蓝色胶囊标签（`<span class="ts">00:20</span>`）
+- 引用块左侧蓝色竖线
+- 证据来源用虚线框单独标注
+- 无外部依赖，单文件可直接分享
+
+**为什么用这套风格**：与作者博客保持一致的视觉语言，便于统一归档和二次发布。
+
+### Slack：如果要别的风格
+
+模板是可替换的——复制 `templates/report.html` 改 CSS 即可。常见风格：
+- **极简白**：`#fbfaf8` 背景 + 深灰字（适合打印）
+- **杂志感**：大字号 + 衬线体（适合长文阅读）
+
+
 ## 常见平台注意事项
 
 | 平台 | 字幕情况 | 备注 |
